@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head> 
+<meta charset="UTF-8">
+<title>Receita - Ótica Vision</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Ótica Vision 👓</h1>
+    <h2>Dados da Receita</h2>
+
+<form>
+   <table>
+    <tr>
+        <th>Olho</th>
+        <th>Esférico</th>
+        <th>Cilindrico</th>
+        <th>Eixo</th>
+        <th>Adição</th>
+    </tr>
+
+    <tr>
+        <td>OD</td>
+        <td><input type="text" id="odEsferico" placeholder="+0,00">
+        <td><input type="text" id="odCilindrico" placeholder="-0,00">
+        <td><input type="number" id="odEixo" min="0" max="180" placeholder="0°">
+        <td><input type="text"  id="odAdicao" placeholder="+0,00"></td>
+    </tr>
+
+    <tr>
+        <td>OE</td>
+         <td><input type="text" id="oeEsferico" placeholder="+0,00">
+        <td><input type="text" id="oeCilindrico" placeholder="-0,00">
+        <td><input type="number" id="oeEixo" min="0" max="180" placeholder="0°">
+        <td><input type="text"  id="oeAdicao" placeholder="+0,00"></td>
+    </tr>
+    
+   </table>
+
+    <br><br>
+
+    <button type="button" id="btnPesquisar">
+        Pesquisar minha lente
+    </button>  
+    <div id="resultadoLentes"></div>
+
+
+</form>
+
+  <script src="receita.js"></script>
+
+</body>
+</html>
