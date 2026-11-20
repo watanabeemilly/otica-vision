@@ -38,4 +38,12 @@ db.run(`
     )
 `);
 
+db.run(`
+    CREATE TABLE IF NOT EXISTS tratamentos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        receita_id INTEGER NOT NULL,
+        nome_tratamento TEXT NOT NULL,
+        FOREIGN KEY (receita_id) REFERENCES receitas(id)
+    )
+`);
 module.exports = db;

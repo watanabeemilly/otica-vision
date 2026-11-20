@@ -319,6 +319,9 @@ function salvarReceita() {
             alert(dados.erro);
             return;
         }
+ localStorage.setItem("receitaId", dados.receitaId);
+
+ document.getElementById("secaoTratamentos").style.display = "block";
 
         alert("Receita e lente salvas com sucesso!");
     })
@@ -327,3 +330,50 @@ function salvarReceita() {
         alert("Não foi possível salvar a receita.");
     });
 }
+
+
+
+document.getElementById("btnSalvarTratamentos").addEventListener("click", async function () {
+    const receitaId = localStorage.getItem("receitaId");
+
+    const selecionados = document.querySelectorAll(
+        'input[name="tratamento"]:checked'
+    );
+
+    if (!receitaId) {
+        alert("Salve a receita antes de escolher os tratamentos.");
+        return;
+    }
+
+    if (selecionados.length === 0) {
+        alert("Selecione pelo menos um tratamento.");
+        return;
+    }
+
+    try {
+        for (const tratamento of selecionados) {
+            const resposta = await fetch("http://localhost:3000/tratamentos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    receita_id: Number(receitaId),
+                    nome_tratamento: tratamento.value
+                })
+            });
+
+            const dados = await resposta.json();
+
+            if (!resposta.ok || dados.erro) {
+                throw new Error(dados.erro || "Erro ao salvar tratamento.");
+            }
+        }
+
+        alert("Tratamentos salvos com sucesso!");
+
+    } catch (erro) {
+        console.error(erro);
+        alert("Erro ao salvar tratamentos. Verifique o servidor.");
+    }
+});

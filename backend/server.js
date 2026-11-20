@@ -64,7 +64,7 @@ app.post("/login", (req, res) => {
     });
 });
 
-// SALVAR RECEITA DO CLIENTE
+// SALVAR node -e "const sqlite3=require('sqlite3').verbose(); const db=new sqlite3.Database('otica.db'); db.all('SELECT * FROM receitas',[],(e,r)=>{if(e)console.error(e);else console.table(r);db.close();});" DO CLIENTE
 app.post("/receitas", (req, res) => {
     const {
         cliente_id,
@@ -171,6 +171,61 @@ app.post("/receitas", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+app.post("/tratamentos", (req, res) => {
+    const { receita_id, nome_tratamento } = req.body;
+
+    if (!receita_id || !nome_tratamento) {
+        return res.status(400).json({
+            erro: "Informe a receita e o tratamento."
+        });
+    }
+
+
+const sql = `
+    INSERT INTO tratamentos (receita_id, nome_tratamento)
+    SELECT ?, ?
+    WHERE NOT EXISTS (
+        SELECT 1 FROM tratamentos
+        WHERE receita_id = ?
+        AND nome_tratamento = ?
+    )
+`;
+
+
+
+    db.run(sql, [receita_id, nome_tratamento, receita_id, nome_tratamento], function (erro) {
+        if (erro) {
+            console.error(erro);
+            return res.status(500).json({
+                erro: "Erro ao salvar tratamento."
+            });
+        }
+
+        
+if (this.changes === 0) {
+    return res.status(200).json({
+        mensagem: "Tratamento já cadastrado.",
+        jaExistia: true
+    });
+}
+
+res.status(201).json({
+    mensagem: "Tratamento salvo com sucesso!",
+    tratamentoId: this.lastID,
+    jaExistia: false
+});
+
+    });
+});
+
+const servidor = app.listen(3000, () => {
     console.log("Servidor da Ótica Vision rodando na porta 3000");
+});
+
+servidor.on("error", (erro) => {
+    console.error("ERRO NO SERVIDOR:", erro);
+});
+
+process.on("exit", (codigo) => {
+    console.log("Node encerrado com código:", codigo);
 });

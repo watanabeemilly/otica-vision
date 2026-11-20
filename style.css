@@ -240,3 +240,61 @@ button{
     font-size: 16px;
     cursor: pointer;
 }
+
+
+/* TRATAMENTOS DAS LENTES */
+
+#secaoTratamentos {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    text-align: left;
+}
+
+#secaoTratamentos h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#secaoTratamentos p {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#secaoTratamentos label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding: 14px;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#secaoTratamentos input[type="checkbox"] {
+    appearance: auto;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: #245582;
+}
+
+#btnSalvarTratamentos {
+    display: block;
+    margin: 25px auto 0;
+    padding: 14px 25px;
+    background-color: #245582;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#btnSalvarTratamentos:hover {
+    background-color: #173c60;
+}
