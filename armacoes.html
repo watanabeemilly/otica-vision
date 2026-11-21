@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armações - Ótica Vision</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="cabecalho-armacoes">
+    <h1>Ótica Vision 👓</h1>
+    <h2>Escolha sua armação</h2>
+</header>
+    <main class="pagina-armacoes">
+        <p>Selecione o tipo de armação ideal para você.</p>
+
+        <section class="opcoes-armacoes">
+            <div class="card-armacao">
+                <h3>Armação de Acetato</h3>
+                <p>Resistente, confortável e disponível em diversos estilos.</p>
+                <button type="button"
+                    onclick="selecionarArmacao('Acetato')">
+                    Selecionar armação
+                </button>
+            </div>
+
+            <div class="card-armacao">
+                <h3>Armação de Metal</h3>
+                <p>Leve, elegante e com acabamento delicado.</p>
+                <button type="button"
+                    onclick="selecionarArmacao('Metal')">
+                    Selecionar armação
+                </button>
+            </div>
+
+            <div class="card-armacao">
+                <h3>Armação Nylor</h3>
+                <p>Modelo com aro parcial e visual discreto.</p>
+                <button type="button"
+                    onclick="selecionarArmacao('Nylor')">
+                    Selecionar armação
+                </button>
+            </div>
+        </section>
+
+        <p id="mensagemArmacao" role="status"></p>
+    </main>
+
+    <script src="armacoes.js"></script>
+</body>
+</html>

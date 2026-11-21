@@ -371,9 +371,14 @@ document.getElementById("btnSalvarTratamentos").addEventListener("click", async 
         }
 
         alert("Tratamentos salvos com sucesso!");
+        document.getElementById("btnContinuarArmacoes").style.display = "block";
 
     } catch (erro) {
         console.error(erro);
         alert("Erro ao salvar tratamentos. Verifique o servidor.");
     }
+    document.getElementById("btnContinuarArmacoes").addEventListener("click", function () {
+    window.location.href = "armacoes.html";
 });
+});
+
