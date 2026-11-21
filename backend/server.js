@@ -217,6 +217,48 @@ res.status(201).json({
 
     });
 });
+app.post("/armacoes", (req, res) => {
+    const { receita_id, tipo_armacao } = req.body;
+
+    if (!receita_id || !tipo_armacao) {
+        return res.status(400).json({
+            erro: "Informe a receita e o tipo de armação."
+        });
+    }
+
+    const tiposPermitidos = ["Acetato", "Metal", "Nylor"];
+
+    if (!tiposPermitidos.includes(tipo_armacao)) {
+        return res.status(400).json({
+            erro: "Tipo de armação inválido."
+        });
+    }
+
+    const sql = `
+        INSERT INTO armacoes (receita_id, tipo_armacao)
+        SELECT id, ? FROM receitas WHERE id = ?
+    `;
+
+    db.run(sql, [tipo_armacao, receita_id], function (erro) {
+        if (erro) {
+            console.error(erro);
+            return res.status(500).json({
+                erro: "Erro ao salvar armação."
+            });
+        }
+
+        if (this.changes === 0) {
+            return res.status(404).json({
+                erro: "Receita não encontrada."
+            });
+        }
+
+        res.status(201).json({
+            mensagem: "Armação salva com sucesso!",
+            armacaoId: this.lastID
+        });
+    });
+});
 
 const servidor = app.listen(3000, () => {
     console.log("Servidor da Ótica Vision rodando na porta 3000");

@@ -46,4 +46,12 @@ db.run(`
         FOREIGN KEY (receita_id) REFERENCES receitas(id)
     )
 `);
+db.run(`
+    CREATE TABLE IF NOT EXISTS armacoes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        receita_id INTEGER NOT NULL,
+        tipo_armacao TEXT NOT NULL,
+        FOREIGN KEY (receita_id) REFERENCES receitas(id)
+    )
+`);
 module.exports = db;
