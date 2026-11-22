@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Pedido - Ótica Vision</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="cabecalho-armacoes">
+        <h1>Ótica Vision 👓</h1>
+        <h2>Finalização do Pedido</h2>
+    </header>
+
+    <main class="pagina-armacoes">
+        <h2>Resumo do seu pedido</h2>
+
+        <p>Confira suas escolhas antes de finalizar.</p>
+
+        <section class="opcoes-armacoes">
+            <div class="card-armacao">
+                <h3>Lente selecionada</h3>
+                <p id="resumoLente">Consultando informações...</p>
+            </div>
+
+            <div class="card-armacao">
+                <h3>Tratamentos selecionados</h3>
+                <p id="resumoTratamentos">Consultando informações...</p>
+            </div>
+
+            <div class="card-armacao">
+                <h3>Armação selecionada</h3>
+                <p id="resumoArmacao">Consultando informações...</p>
+            </div>
+        </section>
+
+        <button type="button" id="btnFinalizar">
+            Finalizar pedido
+        </button>
+
+        <p id="mensagemPedido" role="status"></p>
+    </main>
+
+    <script src="pedido.js"></script>
+</body>
+</html>

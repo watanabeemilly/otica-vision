@@ -54,4 +54,15 @@ db.run(`
         FOREIGN KEY (receita_id) REFERENCES receitas(id)
     )
 `);
+
+db.run(`
+    CREATE TABLE IF NOT EXISTS pedidos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        receita_id INTEGER NOT NULL UNIQUE,
+        status TEXT NOT NULL DEFAULT 'Finalizado',
+        data_pedido TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (receita_id) REFERENCES receitas(id)
+    )
+`);
+
 module.exports = db;

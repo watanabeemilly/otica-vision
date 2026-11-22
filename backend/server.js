@@ -1,4 +1,4 @@
-const express = require("express");
+﻿const express = require("express");
 const cors = require("cors");
 const db = require("./database");
 
@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Backend da Ótica Vision funcionando");
+    res.send("Backend da Ã“tica Vision funcionando");
 });
 
 // CADASTRO DO CLIENTE
@@ -23,7 +23,7 @@ app.post("/clientes", (req, res) => {
     db.run(sql, [nome, cpf, email, telefone, senha], function (erro) {
         if (erro) {
             return res.status(400).json({
-                erro: "Não foi possível cadastrar o cliente"
+                erro: "NÃ£o foi possÃ­vel cadastrar o cliente"
             });
         }
 
@@ -204,7 +204,7 @@ const sql = `
         
 if (this.changes === 0) {
     return res.status(200).json({
-        mensagem: "Tratamento já cadastrado.",
+        mensagem: "Tratamento jÃ¡ cadastrado.",
         jaExistia: true
     });
 }
@@ -222,7 +222,7 @@ app.post("/armacoes", (req, res) => {
 
     if (!receita_id || !tipo_armacao) {
         return res.status(400).json({
-            erro: "Informe a receita e o tipo de armação."
+            erro: "Informe a receita e o tipo de armaÃ§Ã£o."
         });
     }
 
@@ -230,7 +230,7 @@ app.post("/armacoes", (req, res) => {
 
     if (!tiposPermitidos.includes(tipo_armacao)) {
         return res.status(400).json({
-            erro: "Tipo de armação inválido."
+            erro: "Tipo de armaÃ§Ã£o invÃ¡lido."
         });
     }
 
@@ -243,25 +243,120 @@ app.post("/armacoes", (req, res) => {
         if (erro) {
             console.error(erro);
             return res.status(500).json({
-                erro: "Erro ao salvar armação."
+                erro: "Erro ao salvar armaÃ§Ã£o."
             });
         }
 
         if (this.changes === 0) {
             return res.status(404).json({
-                erro: "Receita não encontrada."
+                erro: "Receita nÃ£o encontrada."
             });
         }
 
         res.status(201).json({
-            mensagem: "Armação salva com sucesso!",
+            mensagem: "ArmaÃ§Ã£o salva com sucesso!",
             armacaoId: this.lastID
         });
     });
 });
 
+app.get("/pedidos/resumo/:receitaId", (req, res) => {
+    const receitaId = Number(req.params.receitaId);
+
+    if (!Number.isInteger(receitaId) || receitaId <= 0) {
+        return res.status(400).json({
+            erro: "Receita inv├ílida."
+        });
+    }
+
+    const sql = `
+        SELECT
+            r.id AS receita_id,
+            r.tipo_lente,
+            r.indice_lente,
+            r.campo_multifocal,
+            (SELECT GROUP_CONCAT(nome_tratamento, ', ')
+             FROM tratamentos
+             WHERE receita_id = r.id) AS tratamentos,
+            (SELECT tipo_armacao
+             FROM armacoes
+             WHERE receita_id = r.id
+             ORDER BY id DESC
+             LIMIT 1) AS armacao
+        FROM receitas r
+        WHERE r.id = ?
+    `;
+
+    db.get(sql, [receitaId], (erro, pedido) => {
+        if (erro) {
+            console.error(erro);
+            return res.status(500).json({
+                erro: "Erro ao consultar pedido."
+            });
+        }
+
+        if (!pedido) {
+            return res.status(404).json({
+                erro: "Receita n├úo encontrada."
+            });
+        }
+
+        res.json(pedido);
+    });
+});
+
+
+app.post("/pedidos", (req, res) => {
+    const receitaId = Number(req.body.receita_id);
+
+    if (!Number.isInteger(receitaId) || receitaId <= 0) {
+        return res.status(400).json({
+            erro: "Receita inv├ílida."
+        });
+    }
+
+    const sql = `
+        INSERT INTO pedidos (receita_id)
+        SELECT r.id
+        FROM receitas r
+        WHERE r.id = ?
+          AND EXISTS (
+              SELECT 1 FROM armacoes a
+              WHERE a.receita_id = r.id
+          )
+    `;
+
+    db.run(sql, [receitaId], function (erro) {
+        if (erro) {
+            if (erro.code === "SQLITE_CONSTRAINT") {
+                return res.status(409).json({
+                    erro: "Este pedido j├í foi finalizado."
+                });
+            }
+
+            console.error(erro);
+            return res.status(500).json({
+                erro: "Erro ao finalizar pedido."
+            });
+        }
+
+        if (this.changes === 0) {
+            return res.status(400).json({
+                erro: "Receita n├úo encontrada ou arma├º├úo n├úo selecionada."
+            });
+        }
+
+        res.status(201).json({
+            mensagem: "Pedido finalizado com sucesso!",
+            pedidoId: this.lastID
+        });
+    });
+});
+
+
+
 const servidor = app.listen(3000, () => {
-    console.log("Servidor da Ótica Vision rodando na porta 3000");
+    console.log("Servidor da Ã“tica Vision rodando na porta 3000");
 });
 
 servidor.on("error", (erro) => {
@@ -269,5 +364,5 @@ servidor.on("error", (erro) => {
 });
 
 process.on("exit", (codigo) => {
-    console.log("Node encerrado com código:", codigo);
+    console.log("Node encerrado com cÃ³digo:", codigo);
 });
