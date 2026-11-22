@@ -330,7 +330,7 @@ app.post("/pedidos", (req, res) => {
         if (erro) {
             if (erro.code === "SQLITE_CONSTRAINT") {
                 return res.status(409).json({
-                    erro: "Este pedido j├í foi finalizado."
+                    erro: "Este pedido já foi finalizado."
                 });
             }
 

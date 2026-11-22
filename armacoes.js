@@ -30,6 +30,12 @@ async function selecionarArmacao(tipo) {
 
         mensagem.textContent = `Armação de ${tipo} selecionada e salva com sucesso!`;
 
+        // Guarda a armação selecionada
+        localStorage.setItem("armacaoSelecionada", tipo);
+
+        // Abre a página de confirmação do pedido
+        window.location.href = "pedido.html";
+        
     } catch (erro) {
         console.error(erro);
         mensagem.textContent = "Erro ao conectar com o servidor.";
